@@ -198,3 +198,187 @@ class Solution:
             i = j + 1 + length
         return result
 ```
+
+## Products of Array Except Self
+Given an integer array nums, return an array output where output[i] is the product of all the elements of nums except nums[i].
+
+Each product is guaranteed to fit in a 32-bit integer. 
+```
+// i don't understand this one at all
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1] * (len(nums))
+
+        for i in range(1, len(nums)):
+            res[i] = res[i-1] * nums[i-1]
+        postfix = 1
+        for i in range(len(nums) - 1, -1, -1):
+            res[i] *= postfix
+            postfix *= nums[i]
+        return res
+```
+
+## Valid Sudoku
+https://neetcode.io/problems/valid-sudoku
+
+You are given a a 9 x 9 Sudoku board board. A Sudoku board is valid if the following rules are followed:
+
+    - Each row must contain the digits 1-9 without duplicates.
+    - Each column must contain the digits 1-9 without duplicates.
+    - Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without duplicates.
+
+Return true if the Sudoku board is valid, otherwise return false
+
+Note: A board does not need to be full or be solvable to be valid.
+```
+# create sets to hold the numbers in the rows and cols
+# and a third set to hold the numbers in the 3x3 squares, which can be represented as indeces 
+# 0, 1, 2 on each axis.
+# iterate over each tile (nested for loops) and check if that item is elsewhere
+# in the current row/col/square (if yes, then it's a duplicate, so return False since board invalid)
+# otherwise, add the tile number to each set
+# if no duplicates found, return True (valid board)
+
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        cols = defaultdict(set)
+        rows = defaultdict(set)
+        squares = defaultdict(set)  # key = (r /3, c /3)
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == ".":
+                    continue
+                if (
+                    board[r][c] in rows[r]
+                    or board[r][c] in cols[c]
+                    or board[r][c] in squares[(r // 3, c // 3)]
+                ):
+                    return False
+                cols[c].add(board[r][c])
+                rows[r].add(board[r][c])
+                squares[(r // 3, c // 3)].add(board[r][c])
+
+        return True
+
+```
+
+## Longest Consecutive Sequence
+Given an array of integers nums, return the length of the longest consecutive sequence of elements.
+
+A consecutive sequence is a sequence of elements in which each element is exactly 1 greater than the previous element.
+
+You must write an algorithm that runs in O(n) time.
+```
+# you want to convert the input array into a set to make them unique
+# then check if each element has a "left neighbor" (something comes before it consecutively)
+# if it doesn't, then it's the start of a sequence
+
+# so if it's the start of a sequence, then check how many numbers come after it consecutively
+# keep track of the longest sequence throughout this problem
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        numSet = set(nums) # create a set from the initial array
+        longest = 0 # keep track of the longest consecutive sequence is
+
+        for n in nums:
+            # check if its the start of a sequence
+            if (n - 1) not in numSet:
+                # if we got here, then n is the start of a sequence
+                length = 0
+                while (n + length) in numSet:
+                    length += 1
+                longest = max(length, longest)
+        return longest
+```
+
+## Is palindrome
+Given a string s, return true if it is a palindrome, otherwise return false.
+
+A palindrome is a string that reads the same forward and backward. It is also case-insensitive and ignores all non-alphanumeric characters.
+### Option 1 (cheater way)
+```
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s_list = [char.lower() for char in s if char.isalnum()]
+        s_list_rev = [char for char in s_list[::-1]]
+        if s_list == s_list_rev:
+            return True
+        return False
+```
+### Option 2 (more efficient way)
+```
+# create a left and right pointer to start at either end of the string
+# create a custom alphaNum function to check if something is a-z,A-Z,0-9
+# using python's ord() function to get ASCII values
+# main while loop checks if left pointer is less than right pointer
+# (because if left > right, that means they crossed each other,
+# and if left == right, that's the exact middle of the string)
+# while moving the pointers, we are also using our alphaNum to skip
+# indexes if they are not alphanumeric
+# if at any point s[left] != s[right], we know it's not a palindrome, so we return False
+
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        left, right = 0, len(s) -1
+
+        while left < right:
+            while left < right and not self.alphaNum(s[left]):
+                left += 1
+            while right > left and not self.alphaNum(s[right]):
+                right -= 1
+            if s[left].lower() != s[right].lower():
+                return False
+            left, right = left + 1, right - 1
+        return True
+
+    def alphaNum(self, c):
+        return (ord('A') <= ord(c) <= ord('Z') or
+                ord('a') <= ord(c) <= ord('z') or
+                ord('0') <= ord(c) <= ord('9'))
+```
+
+## Two integer sum II (sorted in ascending order)
+Given an array of integers numbers that is sorted in non-decreasing order.
+
+Return the indices (1-indexed) of two numbers, [index1, index2], such that they add up to a given target number target and index1 < index2. Note that index1 and index2 cannot be equal, therefore you may not use the same element twice.
+
+There will always be exactly one valid solution.
+
+Your solution must use O(1) additional space.
+### Option 1 (easier way, takes more time)
+```
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        for i in range(len(numbers)):
+            for j in range(len(numbers[i+1:])):
+                if (numbers[i] + numbers[j]) == target:
+                    return [i+1,j+1]
+```
+### Option 2 (better way, uses O(n) linear time)
+```
+# uses two pointers starting at either end of the array
+# takes advantage of the fact that the arra is pre-sorted from smallest to greatest
+# use curSum to calculate the sum of the numbers at the l and r indexes
+# if curSum > target, that means we want to decrease the sum (move r pointer to the left to get a smaller number)
+# if curSum < target, that means we want to increase the sum (move l pointer to the right to get a larger number)
+# if curSum == target, we found the correct pair and can return the pointers (the indexes) (remember to add 1 for 1-indexed answer)
+# this way we are guaranteed to get the correct pair
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers) - 1
+
+        while l < r:
+            curSum = numbers[l] + numbers[r]
+
+            if curSum > target:
+                r -= 1
+            elif curSum < target:
+                l += 1
+            else:
+                return [l + 1, r + 1]
+
+```
