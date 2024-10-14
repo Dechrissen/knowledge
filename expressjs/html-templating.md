@@ -106,3 +106,38 @@ blah html
 
 <%- include('partials/footer.ejs') %>
 ```
+
+## EJS Mate
+`npm i ejs-mate`
+
+- somehow a better option than partials for templatizing the HTML head etc.
+- the `layout()` function, which you call in an HTML boilerplate template, looks for all the content in the file and passes it through as `body` to the other files that have `<%- body %>`
+
+Create an HTML file `boilerplate.ejs`:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boilerplate</title>
+</head>
+<body>
+    <%- body %>
+</body>
+</html>
+```
+
+and in the actual content HTML files, you can call `<% layout('layouts/boilerplate') %>` at the top, followed by just the content that should go into the `<body>`:
+```html
+<% layout('layouts/boilerplate') %>
+    <h1>All Campgrounds</h1>
+    <div>
+        <a href="/campgrounds/new">Add new campground</a>
+    </div>
+    <ul>
+        <% for (let campground of campgrounds) { %>
+            <li><a href="/campgrounds/<%=campground._id%>"><%= campground.title %></a></li>
+        <% } %>
+    </ul>
+```
