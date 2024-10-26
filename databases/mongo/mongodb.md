@@ -129,7 +129,7 @@ db.dogs.find({ breed: { $in: ['Dachshund', 'Corgi', 'Chihuahua'] } })
 ```
 
 ## Mongo data/model relationships
-[Official MongoDB blog psot about this](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design)  
+[Official MongoDB blog post about this](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design)  
 
 - many entities are commonly stored in a database
 - they all are connected to each other via different relationships

@@ -260,3 +260,17 @@ function handleValidationError (err) {
     return err; // so it goes back to our middleware, and gets passed to `next()` (to go to the next middleware or whatever)
 }
 ```
+
+## Mongoose middleware on deletion
+- if you have some linked documents/data, and you want to delete (for example) all Products in a Farm when that Farm is deleted ...
+- you can use Mongoose middleware on the Schema for that thing you're deleting
+
+```javascript
+// this is post middleware, which runs after the query (which is what we want becuase we need access to the deleted document)
+farmSchema.post('findOneAndDelete', async function (farm) {
+    if (farm.products.length) {
+        const res = await Product.deleteMany({ _id: { $in: farm.products } }); // deletes all the products that are in some farm's `products` array
+        console.log(res);
+    }
+} )
+```
