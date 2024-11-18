@@ -71,7 +71,7 @@ Return the answer with the smaller index first.
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        prevMap = {}  # val -> index
+        prevMap = {}  # val : index
 
         for i, n in enumerate(nums):
             diff = target - n
@@ -105,9 +105,11 @@ class Solution:
 ### Option 2
 ```
 # this is the way I did it, which was more intuitive to me
-# sort each word in the list, and then add it to a dict  of sorted_word:[word1, word2, etc] pairs
+# sort each word in the list, and then add it to a dict of sorted_word:[word1, word2, etc] pairs
 # for each anagram in the dict's keys, add to a list all the values (the lists of anagrams for that sorted_word)
 # return that list
+
+# note: the keys 'sorted_word' are each a representation of what all the anagrams in that list which that sorted_word will sort to. so sorted_word is just an identifier
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
@@ -123,7 +125,6 @@ class Solution:
         
         for anagram in sortedDict:
             solution.append(sortedDict[anagram])
-
 
         return solution
 ```
@@ -281,7 +282,7 @@ You must write an algorithm that runs in O(n) time.
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         numSet = set(nums) # create a set from the initial array
-        longest = 0 # keep track of the longest consecutive sequence is
+        longest = 0 # keep track of the longest consecutive sequence
 
         for n in nums:
             # check if its the start of a sequence
@@ -381,4 +382,27 @@ class Solution:
             else:
                 return [l + 1, r + 1]
 
+```
+
+## Reverse a string 3 ways
+### Option 1 - function
+```python
+def reverse(s):
+    result = ''
+    for i in s:
+        result = i + result
+    return result
+```
+
+### Option 2 - built-in reversed() method
+```python
+# reversed() creates a reversed object (it is an iterator)
+s = 'something'
+reversed_s = ''.join(reversed(s))
+```
+
+### Option 3 - extended slice
+```python
+s = 'something'
+reversed_s = s[-1:0:-1] # can also omit the first 2 args: s[::-1]
 ```

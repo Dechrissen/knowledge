@@ -35,7 +35,7 @@ print(5 / 2)
 print(5 // 2)
 2
 
-# round towards 0 by default so negative numbers will round down
+# negative numbers will round down
 print(-3 // 2)
 -2
 
@@ -127,7 +127,7 @@ for i, n in enumerate(nums):
 1 2
 2 3
 
-# Loops thru multiple arrays simultaneously
+# Loop through multiple arrays simultaneously
 # with unpacking using zip()
 nums1 = [1, 3, 5]
 nums2 = [2, 4, 6]
