@@ -1,3 +1,3 @@
 # Notes
 
-A repository containing my notetaking for various topics (each in its own directory).
+A repository containing my notes/knowledge for various topics. Each topic is in its own directory.

@@ -1,0 +1,69 @@
+How to mount Unraid SMB shares (cifs) in Linux (Arch)
+-----------------------------------------------------
+
+On the system where you want the share mounted...
+
+1. make sure cifs-utils package is installed:
+
+sudo pacman -S cifs-utils
+
+2. create ~/.smbcredentials file containing credentials to access the share:
+
+username=<username>
+password=<password>
+
+3. mkdir /mnt/<name_you_want_the_mounted_share_to_be>
+
+4. sudo nano /etc/fstab
+
+add a line at the bottom:
+
+//<IP address of server>/<name of share> <TAB> /mnt/<name_you_want_the_mounted_share_to_be> <TAB> cifs <TAB> credentials=/home/<USER>/.smbcredentials,iocharset=utf8,noserverino,noperm,vers=3.0 <TAB> 0 <TAB> 0
+
+(if you have issues with this, you might need to try different values for "vers", like 2.0, 1.0, etc.)
+
+5. reload fstab daemon:
+
+sudo systemctl daemon-reload
+
+then reboot system
+
+6. mount everything in fstab:
+
+sudo mount -a
+
+(or -av for verbose error output)
+
+7. create a shell script (~/mount.sh) to mount everything in fstab:
+
+#!/bin/bash
+sudo mount -a
+
+and make it executable:
+
+sudo chmod a+x mount.sh
+
+8. create a systemd service to mount the share on startup:
+
+sudo nano /lib/systemd/system/automount.service
+
+add the lines:
+
+[Unit]
+Description=Mount fstab contents on startup
+
+[Service]
+ExecStart=/home/<USER>/mount.sh
+
+[Install]
+WantedBy=multi-user.target
+
+9. sudo systemctl enable automount.service
+
+then reboot
+
+
+
+EXTRA TROUBLESHOOTING:
+- you might have to restart sshd service in Unraid terminal, not sure why
+- search something about "stale fstab file" if something is not working with fstab
