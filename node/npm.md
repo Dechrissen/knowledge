@@ -27,3 +27,13 @@ this installs all dependencies for a project (from a `package.json` file in a pr
 ```bash
 npm install
 ```
+
+### npm start
+in `package.json`, we can we can create a `start` field in the `scripts` field, and give it a value that is equal to the command that should be used to start the app, e.g.
+```
+"scripts": {
+"test": "something...",
+"start": "node app.js"
+}
+```
+this allows the use of `npm start` and that will also start the app in the same way as `node app.js`
