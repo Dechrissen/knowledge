@@ -49,7 +49,7 @@ There are four types of join functions. Joins combine the rows from two or more 
 
 
 2. What is an `INDEX` and why is it useful?
-It's useful because it allows for the faster retrieval of records from a table. The index creates an entry for each value (basically a **pointer**), which in turn, makes it faster to retrive data.
+It's useful because it allows for the faster retrieval of records from a table. The index creates an entry for each value (basically a **pointer**), which in turn, makes it faster to retrieve data.
 
 3. What does it mean to add a `constraint` in SQL?
 There are many SQL contraints types which can be used. Their purpose is to specify a **rule** for the data within a table, **limiting the type of data that can go in the table**.

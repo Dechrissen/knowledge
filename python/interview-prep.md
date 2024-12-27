@@ -4,14 +4,14 @@ https://www.youtube.com/watch?v=0K_eZGS5NsU
 
 - dynamically typed language (types determined at runtime)
 
-```
+```python
 # multiple assignments
 n, m = 0, "abc"
 ```
 - python's null is None
 
 ## Loops
-```
+```python
 # for loops
 for i in range(5):
     print(i)
@@ -26,7 +26,7 @@ for i in range(6, 2, -1):
 ```
 
 ## Math
-```
+```python
 # Division is decimal by default
 print(5 / 2)
 2.5
@@ -70,7 +70,7 @@ True
 ```
 
 ## Array stuff
-```
+```python
 # Arrays (list in python)
 arr = [1, 2, 3]
 
@@ -187,7 +187,7 @@ print(ord("a"))
 ```
 
 ## Queues, hash sets, dictionaries, tuples, and other stuff
-```
+```python
 # Queues (double ended queue)
 from collections import deque
 queue = deque()
@@ -325,7 +325,7 @@ while arr:
 ```
 
 ## Functions
-```
+```python
 # Nested functions
 
 # nested functions have access to outer variables
@@ -365,7 +365,7 @@ double(nums, val)
 ```
 
 ## Classes
-```
+```python
 class MyClass:
     # constuctor
     def __init__(self, nums):

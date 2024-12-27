@@ -240,7 +240,7 @@ FROM
 there is also the average aggregator `avg()`
 
 ## SQL functions
-- `LTRIN(string)` remove leading spaces from string
+- `LTRIM(string)` remove leading spaces from string
 - `RTRIM(string)` remove trailing spaces from string
 - `TRIM(string)` remove both leading and trailing spaces
 
