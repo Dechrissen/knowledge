@@ -111,3 +111,21 @@ dropbox-cli
 - then `dropbox-cli autostart` should start it on boot
 - a folder `~/Dropbox` should be created automatically
 - ensure `./config/autostart/dropbox.desktop` was created as well
+
+### Trezor Suite
+Use the AppImage. udev rules are already installed by default on Arch.
+- go to https://trezor.io/guides/trezor-suite/installing-trezor-suite-on-linux
+- scroll down to Arch Linux to find this link: https://trezor.io/trezor-suite
+- click "More" by the downloads button and select the option for Linux
+- save the AppImage file, `cd` to its location, run `chmod a+x` on it, then you can simply run it with `./` + filename
+
+### Yubico / Yubikey
+No solution yet, their AppImage and their source code option don't seem to work. Just use Windows or Mac for now. This repo might be an option (CLI tool) but udev rules might need to be added: https://github.com/Yubico/yubikey-manager
+
+Here is their direct article for Linux but nothing works so far: https://support.yubico.com/s/article/Installing-Yubico-Software-on-Linux
+
+### Rufus
+for flash drive management / fixing broken flash drives
+```
+yay -S rufus-linux
+```
