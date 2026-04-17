@@ -47,6 +47,20 @@ audio stuff (do i need this?)
 sudo pacman -S pipewire-pulse pipewire-alsa jack2 
 ```
 
+## get Derek's dotfiles
+remember to switch to `arch` branch
+```
+cd
+git clone https://github.com/Dechrissen/dotfiles.git
+cd dotfiles
+git checkout arch
+```
+run install script
+```
+chmod +x dotfiles/scripts/setup.sh
+/dotfiles/scripts/setup.sh
+```
+
 ## packages to install
 ```
 fastfetch
@@ -107,8 +121,9 @@ libappindicator
 dropbox-cli
 ```
 - install packages above
-- run `dropbox-cli status` and it should prompt you to connect your account/login
-- then `dropbox-cli autostart` should start it on boot
+- run `dropbox-cli start` and it should prompt you to connect your account/login in browser
+- `dropbox-cli status` should print a confirmation that it's running
+- then `dropbox-cli autostart y` should start it on boot
 - a folder `~/Dropbox` should be created automatically
 - ensure `./config/autostart/dropbox.desktop` was created as well
 
@@ -129,3 +144,29 @@ for flash drive management / fixing broken flash drives
 ```
 yay -S rufus-linux
 ```
+
+### Steam
+1. `sudo nano /etc/pacman.conf` and uncomment the 2 lines for "[multilib]" and "Inlcude..." at the bottom so you use it for 32bit packages
+2. `sudo pacman -Syu`
+3. `sudo pacman -S steam`
+    - when installing, it will prompt you for vulkan drivers, make sure to use the right one for your GPU, e.g. `vulkan-radeon` for AMD
+    - refer to https://wiki.archlinux.org/title/Graphics_processing_unit#Installation
+
+### Wiping and partitioning and mounting a disk
+1. find the right disk with `lsblk -o NAME,SIZE,TYPE,MOUNTPOINT`
+2. partition the disk with `cfdisk /dev/sdX` (or `nvmeXn1`)
+    - delete any partitions and create a new full-size partition and write/quit
+3. format the partition (not the whole disk) with `mkfs.ext4 /dev/sdX1` (or `nvmeXn1`)
+    - it might say old stuff is on there such as "DOS/MBR boot sector", just proceed anyway
+#### mounting the new partition
+1. for a drive for Steam games for instance, create mount point with `sudo mkdir /mnt/games`
+2. then mount the partition there with `sudo mount /dev/sdX1 /mnt/games` (or `nvmeXn1`)
+3. set ownership `sudo chown -R $USER:$USER /mnt/games` (or replace with your actual username)
+
+Set it to auto-mount on boot using UUID:
+1. get UUID with `lsblk -f` (look for the new partition and get the UUID)
+2. add it to `/etc/fstab`:
+```
+UUID=your-uuid-here  /mnt/games  ext4  defaults,noatime  0  2
+```
+3. mount everything in fstab again: `sudo mount -a`
