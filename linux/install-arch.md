@@ -145,6 +145,12 @@ for flash drive management / fixing broken flash drives
 yay -S rufus-linux
 ```
 
+## Godot
+Wine needed for Windows builds?
+```
+sudo pacman -S godot wine
+```
+
 ### Steam
 1. `sudo nano /etc/pacman.conf` and uncomment the 2 lines for "[multilib]" and "Inlcude..." at the bottom so you use it for 32bit packages
 2. `sudo pacman -Syu`
