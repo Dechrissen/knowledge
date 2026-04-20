@@ -89,6 +89,19 @@ ttf-roboto-mono-nerd
 ttf-0xproto-nerd
 ```
 
+## Setting up Git SSH key
+generate a key for the machine
+```
+ssh-keygen -t ed25519 -C "you@email.com"
+```
+start the ssh agent in the background and add ssh private key to the agent, then `ssh-add -l` to make sure it was added
+```
+eval `ssh-agent -s`
+ssh-add ~/.ssh/id_ed25519
+ssh-add -l
+```
+then add the public key to your GitHub account in settings
+
 ## Screenshots
 ```
 grim
@@ -112,6 +125,24 @@ nvm install node
 nvm use node
 npm install -g nodemon
 ```
+
+## `lm_sensors` and CoolerControl for hardware monitoring
+lm_sensors docs: https://wiki.archlinux.org/title/Lm_sensors
+CoolerControl docs: https://gitlab.com/coolercontrol/coolercontrol
+
+```
+sudo pacman -S lm_sensors
+sudo sensors-detect --auto
+yay -S coolercontrol
+```
+
+`sudo pacman -S --asdeps qt6-wayland` (for Wayland)
+
+then enable the service
+```
+sudo systemctl enable --now coolercontrold
+```
+and run CoolerControl from wofi or something
 
 ### Dropbox
 ```
