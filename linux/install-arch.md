@@ -123,8 +123,16 @@ then...
 ```
 nvm install node
 nvm use node
-npm install -g nodemon
 ```
+
+install some node things
+```
+npm install -g nodemon
+npm install -g @anthropic-ai/claude-code
+```
+
+### Claude Code (claude-code node CLI app)
+to run Claude, run `claude` and authenticate. To use interactively, run `claude` in whatever project directory/repo and prompt it there. Can also do one-shot prompts with `claude -p "your prompt"`
 
 ## `lm_sensors` and CoolerControl for hardware monitoring
 lm_sensors docs: https://wiki.archlinux.org/title/Lm_sensors
