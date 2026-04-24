@@ -1,7 +1,8 @@
 # Installing Arch Linux
 
-1. follow Arch wiki install guide
+1. follow Arch wiki install guide (this video is what I used: https://www.youtube.com/watch?v=68z11VAYMS8)
     - use `cfdisk` for disk partitioning
+    - `IMPORTANT`: use UUID when creating `/etc/fstab` instead of the partition names, so when adding drives in the future, drive names don't get swapped. otherwise, a boot partition might not be found on the drive it's looking at 
 2. `systemctl enable NetworkManager`
 3. install basic things post-install and post-login
 ```
@@ -198,6 +199,8 @@ sudo pacman -S godot wine
     - refer to https://wiki.archlinux.org/title/Graphics_processing_unit#Installation
 
 ### Wiping and partitioning and mounting a disk
+> !IMPORTANT
+> make sure to use UUID identifiers in `/etc/fstab` instead of partition names (like `/dev/nvme0n1p1`) otherwise you can have issues on boot where the drive names get reordered, and your second drive name becomes the original drive, the `/boot/efi` doesn't exist
 1. find the right disk with `lsblk -o NAME,SIZE,TYPE,MOUNTPOINT`
 2. partition the disk with `cfdisk /dev/sdX` (or `nvmeXn1`)
     - delete any partitions and create a new full-size partition and write/quit
@@ -214,4 +217,4 @@ Set it to auto-mount on boot using UUID:
 ```
 UUID=your-uuid-here  /mnt/games  ext4  defaults,noatime  0  2
 ```
-3. mount everything in fstab again: `sudo mount -a`
+3. `sudo systemctl daemon-reload` and then mount everything in fstab again: `sudo mount -a`
