@@ -70,7 +70,7 @@ rclone
 python-pip
 man-db
 signal-desktop
-*neovim (skip if you want ot use bob, package manager for nvim instead)
+*neovim (skip if you want to use bob, package manager for nvim instead)
 cifs-utils
 grep
 htop
@@ -90,6 +90,52 @@ ttf-roboto-mono-nerd
 ttf-0xproto-nerd
 ```
 
+## Ly display manager
+> [!WARNING]
+> If you run into issues where you're stuck and can't do anything in a tty (virtual terminal), you can switch to a new one (e.g. the 2nd one) with Ctrl+Alt+F2
+
+- install with `sudo pacman -S ly`
+- follow this: https://wiki.archlinux.org/title/Ly
+- enable Ly on tty1 (for example, since you likely don't need anything else on tty1)
+    - `sudo systemctl enable ly@tty1.service`
+- disable getty on tty1 because most Linux systems start a getty@tty1.service (a login prompt) on TTY1, and that's the conventional slot for a display manager too
+    - `sudo systemctl disable getty@tty1.service`
+- if switching from bash starting the Hyprland session to Ly handling it, make sure this is _not_ in `~/.bash_profile`:
+```
+if uwsm check may-start; then
+    exec uwsm start hyprland.desktop
+fi
+```
+- reboot
+- when logging in, there will be 2 Hyprland sessions to choose from: Hyprland and Hyprland (uwsm managed) — the latter is the one we want, since we want uwsm to manage the session
+- for reference, the `.desktop` files for the hyprland session and the hyprland-uwsm sessions are in `/usr/share/wayland-sessions/` (there should be one for each)
+
+notes:
+- old setup with just bash: systemd → getty → bash login shell → uwsm → hyprland
+- new setup with Ly: systemd → Ly → uwsm → hyprland
+
+## Setting up `hypridle` (for screen timeout)
+- `sudo pacman -S hypridle`
+- add this to `.config/hypr/hypridle.conf`:
+```
+general {
+    lock_cmd = none
+    before_sleep_cmd = none
+    after_sleep_cmd = none
+    ignore_dbus_inhibit = false
+}
+
+listener {
+    timeout = 300  # seconds (5 minutes)
+    on-timeout = hyprctl dispatch dpms off
+    on-resume = hyprctl dispatch dpms on
+}
+```
+- add this to `.config/hypr/hyprland.conf` (assuming you're using `uwsm` to autostart apps and to manage the Hyprland session):
+```
+exec-once = uwsm app -- hypridle
+```
+
 ## Setting up Git SSH key
 generate a key for the machine
 ```
@@ -102,6 +148,14 @@ ssh-add ~/.ssh/id_ed25519
 ssh-add -l
 ```
 then add the public key to your GitHub account in settings
+
+## `ufw` – basic firewall setup
+```
+sudo pacman -S ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw enable
+```
 
 ## Screenshots
 ```
@@ -169,6 +223,7 @@ dropbox-cli
 
 ### Trezor Suite
 Use the AppImage. udev rules are already installed by default on Arch.
+- first install FUSE on Arch (`sudo pacman -S fuse2`)
 - go to https://trezor.io/guides/trezor-suite/installing-trezor-suite-on-linux
 - scroll down to Arch Linux to find this link: https://trezor.io/trezor-suite
 - click "More" by the downloads button and select the option for Linux
