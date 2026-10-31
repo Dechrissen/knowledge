@@ -47,3 +47,30 @@ for (fahr = 0; fahr <= 300; fahr = fahr + step) {
     printf("%3.0f %6.1f\n",fahr,cels);
 }
 ```
+### symbolic constants
+- these can be used to represent "magic numbers", i.e. things like 300 for an `upper` variable, and 0 for a `lower` variable in a function
+- _symbolic constants_ can be used instead, and convey more information to readers of the program later
+- they are defined at the top, under `#include`s, using the `#define` operator:
+```{c}
+#include <stdio.h>
+
+#define UPPER 300
+#define LOWER 0
+```
+- **format**: `#define` _name_  _replacement text_
+- _replacement text_ can be any sequence of characters, not just numbers
+- they are traditionally written in all-caps
+- their lines do not end with a semicolon
+- they can be referenced in the program later just like variables, e.g. `fahr = UPPER`
+
+### `long` integers, `double`, and increment operator
+- `long n;` defines n as a _long integer_, i.e. a 32-bit integer, rather than an `int` which is a 16-bit integer (max value 32767) on some systems (old ones? — author says `int` and `long` are the same size on some machines)
+    - using `printf()`, we use the conversion specification `%ld` to tell it that the corresponding argument is a long integer
+- `++n` increments n by 1. `n++` is also valid, but slightly different (expanded in Chapter 2)
+- `double nc;` defines nc as a _double precision float_
+    - using `printf()`, we use the conversion specification `%f`, just like with normal `float`s
+
+### character constants
+- a character written between single quotes (`'A'`) represents an integer value equal to the numerical value of the character in the machine's character set (e.g. ASCII, A is 65)
+- escape sequences used in string constants are also legal in character constants, e.g. `'\n'` is the newline character, which is 10 in ASCII — just an integer
+    - conversely, `"n"` in double quotes is a string constant that happens to contain only one character (newline)
